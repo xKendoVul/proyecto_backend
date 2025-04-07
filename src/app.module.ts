@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { BooksModule } from './modules/books/books.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoansModule } from './modules/loans/loans.module';
 
 @Module({
   imports: [
@@ -18,6 +19,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+
+    LoansModule,
   ],
   controllers: [],
   providers: [],
