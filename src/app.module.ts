@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { BooksModule } from './modules/books/books.module';
+import { GenreModule } from './modules/genre/genre.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoansModule } from './modules/loans/loans.module';
@@ -7,8 +8,9 @@ import { LoansModule } from './modules/loans/loans.module';
 @Module({
   imports: [
     BooksModule,
+    GenreModule, 
+    LoansModule,
     ConfigModule.forRoot(),
-
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -19,8 +21,6 @@ import { LoansModule } from './modules/loans/loans.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-
-    LoansModule,
   ],
   controllers: [],
   providers: [],
