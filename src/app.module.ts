@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
 import { BooksModule } from './modules/books/books.module';
-import { GenreModule } from './modules/genre/genre.module';
+import { LoansModule } from './modules/loans/loans.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LoansModule } from './modules/loans/loans.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
     BooksModule,
-    GenreModule, 
     LoansModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
@@ -21,8 +20,9 @@ import { LoansModule } from './modules/loans/loans.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    CommonModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

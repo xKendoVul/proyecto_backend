@@ -7,5 +7,4 @@ export class Genre {
 
   @Column({ type: 'varchar', length: 50 })
   name: string;
-
 }
