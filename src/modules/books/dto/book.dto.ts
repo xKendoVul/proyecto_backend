@@ -44,4 +44,4 @@ export class CreateBookDto {
   isAvailable?: boolean;
 }
 
-export class UpdateBookDto extends PartialType(CreateBookDto) { }
+export class UpdateBookDto extends PartialType(CreateBookDto) {}
