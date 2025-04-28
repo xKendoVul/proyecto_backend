@@ -5,7 +5,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Genre } from './genre.entity';
 
 @Entity()
 export class Book {
@@ -15,8 +18,19 @@ export class Book {
   @Column({ type: 'varchar', length: 100 })
   title: string;
 
-  @Column({ type: 'varchar', length: 50 })
-  genre: string;
+  @ManyToMany(() => Genre, (genre) => genre.books)
+  @JoinTable({
+    name: 'book_genre',
+    joinColumn: {
+      name: 'book_id',
+    },
+    inverseJoinColumn: {
+      name: 'genre_id',
+    },
+  })
+  genre: Genre[];
+  // @Column({ type: 'text', length: 100 })
+  // genre: string;
 
   @Column({ type: 'varchar', length: 50 })
   author: string;

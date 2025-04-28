@@ -18,6 +18,8 @@ export class CommonCRUDService<
 
   constructor(protected readonly repository: Repository<Entity>) {}
 
+  // ** --------------------------------------------------------------
+
   async create(createDto: CreateDto): Promise<Entity> {
     try {
       const entity = this.repository.create(createDto as DeepPartial<Entity>);
@@ -28,6 +30,8 @@ export class CommonCRUDService<
     }
   }
 
+  // ** --------------------------------------------------------------
+
   async findOne(id: number): Promise<Entity> {
     const entity = await this.repository.findOneBy({ id } as any);
     if (!entity) {
@@ -36,6 +40,8 @@ export class CommonCRUDService<
     return entity;
   }
 
+  // ** --------------------------------------------------------------
+
   async findAll(paginationDto: PaginationDto): Promise<Entity[]> {
     const { limit = 3, offset = 0 } = paginationDto;
     return this.repository.find({
@@ -43,6 +49,8 @@ export class CommonCRUDService<
       skip: offset,
     });
   }
+
+  // ** --------------------------------------------------------------
 
   async update(id: number, updateDto: UpdateDto): Promise<Entity> {
     const entity = await this.repository.findOne({
@@ -60,6 +68,8 @@ export class CommonCRUDService<
     }
   }
 
+  // ** --------------------------------------------------------------
+
   async remove(id: number): Promise<{ message: string }> {
     const entity = await this.repository.findOne({
       where: { id } as FindOptionsWhere<Entity>,
@@ -73,6 +83,8 @@ export class CommonCRUDService<
       message: `Se eliminó la entidad con id ${id}`,
     };
   }
+
+  // ** --------------------------------------------------------------
 
   protected handleDBException(error: any): never {
     if (error.code === '23505') {

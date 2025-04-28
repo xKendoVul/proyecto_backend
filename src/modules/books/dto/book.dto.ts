@@ -1,6 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsInt,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -19,10 +20,11 @@ export class CreateBookDto {
   @ApiProperty()
   title: string;
 
-  @IsString()
-  @MinLength(3)
+  @IsNumber()
+  @IsOptional()
   @ApiProperty()
-  genre: string;
+  @IsNotEmpty()
+  readonly genre_id: number;
 
   @IsString()
   @MinLength(3)
