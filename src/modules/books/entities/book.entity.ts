@@ -29,8 +29,6 @@ export class Book {
     },
   })
   genre: Genre[];
-  // @Column({ type: 'text', length: 100 })
-  // genre: string;
 
   @Column({ type: 'varchar', length: 50 })
   author: string;
