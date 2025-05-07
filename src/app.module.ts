@@ -4,6 +4,7 @@ import { LoansModule } from './modules/loans/loans.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CommonModule } from './common/common.module';
       synchronize: true,
     }),
     CommonModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
