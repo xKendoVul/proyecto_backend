@@ -7,8 +7,13 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+
 import { Genre } from './genre.entity';
+import { Author } from './author.entity';
+import { Publisher } from './publisher.entity';
 
 @Entity()
 export class Book {
@@ -30,11 +35,21 @@ export class Book {
   })
   genre: Genre[];
 
-  @Column({ type: 'varchar', length: 50 })
-  author: string;
+  @ManyToMany(() => Author, (author) => author.books)
+  @JoinTable({
+    name: 'book_author',
+    joinColumn: {
+      name: 'book_id',
+    },
+    inverseJoinColumn: {
+      name: 'author_id',
+    },
+  })
+  author: Author[];
 
-  @Column({ type: 'varchar', length: 50 })
-  publisher: string;
+  @ManyToOne(() => Publisher)
+  @JoinColumn({ name: 'publisher_id', referencedColumnName: 'id' })
+  publisher: Publisher;
 
   @Column({ type: 'int4' })
   publication_year: number;
