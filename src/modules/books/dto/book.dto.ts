@@ -7,6 +7,7 @@ import {
   IsPositive,
   IsString,
   MinLength,
+  Min,
 } from 'class-validator';
 
 export class CreateBookDto {
@@ -29,7 +30,7 @@ export class CreateBookDto {
   @IsString()
   @MinLength(3)
   @ApiProperty()
-  author: string;
+  readonly author_id: string;
 
   @IsString()
   @MinLength(3)
@@ -47,3 +48,16 @@ export class CreateBookDto {
 }
 
 export class UpdateBookDto extends PartialType(CreateBookDto) {}
+
+export class FilterBookDto {
+  @IsOptional()
+  @IsPositive()
+  limit: number;
+
+  @IsOptional()
+  @Min(0)
+  offset: number;
+
+  @IsOptional()
+  title: string;
+}

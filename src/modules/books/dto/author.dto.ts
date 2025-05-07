@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class CreateGenreDto {
+export class CreateAuthorDto {
   @IsOptional()
   @IsNumber()
   @ApiProperty()
@@ -16,13 +16,13 @@ export class CreateGenreDto {
 
   @IsString()
   @MinLength(3)
-  @ApiProperty() // Asegúrate de que ApiProperty esté aquí
+  @ApiProperty()
   name: string;
 }
 
-export class UpdateGenreDto extends PartialType(CreateGenreDto) {}
+export class UpdateAuthorDto extends PartialType(CreateAuthorDto) {}
 
-export class FilterGenreDto {
+export class FilterAuthorDto {
   @IsOptional()
   @IsPositive()
   limit: number;

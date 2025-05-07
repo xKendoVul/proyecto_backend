@@ -59,4 +59,5 @@ export class Book {
     nullable: true,
   })
   deletedAt?: Date;
+  book: Genre;
 }

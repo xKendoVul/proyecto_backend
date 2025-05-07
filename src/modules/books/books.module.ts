@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { BooksController } from './controllers/books.controller';
 import { GenreController } from './controllers/genre.controller';
-import { BooksService, GenreService } from './services/books.service';
+import { GenreService } from './services/genre.service';
+import { BooksService } from './services/books.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Genre } from './entities/genre.entity';
 import { Book } from './entities/book.entity';
