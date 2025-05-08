@@ -5,13 +5,18 @@ import { SeedService } from './seed.service';
 export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 
-  @Get()
-  executeSeed() {
-    return this.seedService.runSeed();
+  @Get('books')
+  executeSeedBooks() {
+    return this.seedService.runSeedBooks();
   }
 
-  @Get('brand')
-  executeSeedBrands() {
-    return this.seedService.runSeedBrands();
+  @Get('genres')
+  executeSeedGenres() {
+    return this.seedService.runSeedGenres();
+  }
+
+  @Get('authors')
+  executeSeedAuthors() {
+    return this.seedService.runSeedAuthors();
   }
 }

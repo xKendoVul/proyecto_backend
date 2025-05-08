@@ -1,6 +1,6 @@
 interface SeedBooks {
   title: string;
-  genre_id: number[];
+  genre_id: number | number[];
   author_id: number;
   publisher: string;
   publication_year: number;
@@ -29,44 +29,12 @@ interface SeedData {
   genres: SeedGenres[];
   authors: SeedAuthors[];
 }
-// interface SeedDataBrand {
-//   brands: SeedBrand[];
-// }
-
-// export const initialDataBrand: SeedDataBrand = {
-//   brands: [
-//     {
-//       name: 'Tesla',
-//       description: 'Vehículos eléctricos con diseño y tecnología avanzada.',
-//       createdAt: new Date(),
-//       updatedAt: new Date(),
-//     },
-//     {
-//       name: 'Ford',
-//       description: 'Marca icónica con enfoque en innovación y electrificación.',
-//       createdAt: new Date(),
-//       updatedAt: new Date(),
-//     },
-//     {
-//       name: 'Volkswagen',
-//       description: 'Ingeniería alemana con visión sostenible y moderna.',
-//       createdAt: new Date(),
-//       updatedAt: new Date(),
-//     },
-//     {
-//       name: 'Rivian',
-//       description: 'SUVs y camionetas eléctricas pensadas para la aventura.',
-//       createdAt: new Date(),
-//       updatedAt: new Date(),
-//     },
-//   ],
-// };
 
 export const initialData: SeedData = {
   books: [
     {
       title: 'El senor de los anillos',
-      genre_id: [1],
+      genre_id: 1,
       author_id: 1,
       publisher: 'Editorial XYZ',
       publication_year: 2001,
@@ -76,7 +44,7 @@ export const initialData: SeedData = {
     },
     {
       title: 'El hobbit',
-      genre_id: [1],
+      genre_id: 1,
       author_id: 1,
       publisher: 'Editorial ABC',
       publication_year: 2005,
@@ -96,7 +64,7 @@ export const initialData: SeedData = {
     },
     {
       title: 'Cien años de soledad',
-      genre_id: [4],
+      genre_id: 4,
       author_id: 3,
       publisher: 'Editorial GHI',
       publication_year: 2015,

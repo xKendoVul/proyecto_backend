@@ -61,7 +61,7 @@ export class BooksController {
 
   @Delete()
   async removeAll() {
-    const dato = await this.BooksService.removeAll();
+    const dato = await this.BooksService.deleteAllBooks();
     const data = {
       data: dato,
       message: 'Registros eliminados correctamente',

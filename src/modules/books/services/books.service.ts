@@ -78,11 +78,13 @@ export class BooksService {
 
     if (changes.genre_id) {
       const genre = await this.genreRepository.findOneBy({
-        id: changes.genre_id,
+        id: Array.isArray(changes.genre_id)
+          ? changes.genre_id[0]
+          : changes.genre_id,
       });
       if (!genre) {
         throw new NotFoundException(
-          `El genero con id ${changes.genre_id} no fue encontrado`,
+          `El genero con id ${Array.isArray(changes.genre_id) ? changes.genre_id.join(', ') : changes.genre_id} no fue encontrado`,
         );
       }
       book.genre = [genre];

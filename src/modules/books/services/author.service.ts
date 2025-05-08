@@ -7,27 +7,31 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
-import { Genre } from '../entities/genre.entity';
-import { CreateGenreDto, FilterGenreDto } from '../dto/genre.dto';
+import { Author } from '../entities/author.entity';
+import {
+  CreateAuthorDto,
+  UpdateAuthorDto,
+  FilterAuthorDto,
+} from '../dto/author.dto';
 
 @Injectable()
-export class GenreService {
-  private readonly logger = new Logger('GenreService');
+export class AuthorService {
+  private readonly logger = new Logger('AuthorService');
 
   constructor(
-    @InjectRepository(Genre)
-    private readonly genreRepository: Repository<Genre>,
+    @InjectRepository(Author)
+    private readonly authorRepository: Repository<Author>,
   ) {}
 
-  findAll(params?: FilterGenreDto) {
+  findAll(params?: FilterAuthorDto) {
     const { limit, offset, name } = params || {};
-    const where: FindOptionsWhere<Genre> = {};
+    const where: FindOptionsWhere<Author> = {};
 
     if (name) {
       where.name = ILike(`%${name}%`);
     }
 
-    return this.genreRepository.find({
+    return this.authorRepository.find({
       order: { id: 'ASC' },
       where,
       take: limit,
@@ -39,44 +43,46 @@ export class GenreService {
   }
 
   async findOne(id: number) {
-    const genre = await this.genreRepository.findOne({
+    const author = await this.authorRepository.findOne({
       where: { id: id },
       relations: { books: true },
     });
 
-    if (!genre) {
+    if (!author) {
       throw new NotFoundException(
         `El genero con id ${id} no fue encontrado en la base de datos`,
       );
     }
-    return genre;
+    return author;
   }
 
-  async create(createGenreDto: CreateGenreDto) {
+  async create(createAuthorDto: CreateAuthorDto) {
     try {
-      const genre = this.genreRepository.create(createGenreDto);
-      await this.genreRepository.save(genre);
-      return genre;
+      const author = this.authorRepository.create(createAuthorDto);
+      await this.authorRepository.save(author);
+      return author;
     } catch (error) {
       this.handleDBException(error);
     }
   }
 
   async remove(id: number) {
-    const exist = await this.genreRepository.existsBy({ id });
-    if (!exist)  {
-      throw new NotFoundException(`El genero con id ${id} no fue encontrado en la base de datos`);
+    const exist = await this.authorRepository.existsBy({ id });
+    if (!exist) {
+      throw new NotFoundException(
+        `El autor con id ${id} no fue encontrado en la base de datos`,
+      );
     }
-    await this.genreRepository.delete(id);
+    await this.authorRepository.delete(id);
     return {
       message: 'Registro eliminado correctamente',
       deletedAt: new Date(),
     };
   }
 
-  async deleteAllGenres() {
-    const query = this.genreRepository.createQueryBuilder('genre');
-    try { 
+  async deleteAllAuthors() {
+    const query = this.authorRepository.createQueryBuilder('author');
+    try {
       return await query.delete().where({}).execute();
     } catch (error) {
       this.handleDBException(error);

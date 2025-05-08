@@ -7,16 +7,16 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CreateGenreDto, FilterGenreDto } from '../dto/genre.dto';
-import { GenreService } from '../services/genre.service';
-import {  BooksService } from '../services/books.service';
+import { CreateAuthorDto, FilterAuthorDto } from '../dto/author.dto';
+import { AuthorService } from '../services/author.service';
 
-@Controller('genre')
-export class GenreController {
-  constructor(private readonly genreService: GenreService) {}
+@Controller('author')
+export class AuthorController {
+  constructor(private readonly authorService: AuthorService) {}
+
   @Get()
-  async getBooksAll(@Query() params: FilterGenreDto) {
-    const rows = await this.genreService.findAll(params);
+  async getAuthorAll(@Query() params: FilterAuthorDto) {
+    const rows = await this.authorService.findAll(params);
 
     const data = {
       data: rows,
@@ -27,7 +27,7 @@ export class GenreController {
   // optener un objeto por id
   @Get(':id')
   async getOne(@Param('id') id: number) {
-    const rows = await this.genreService.findOne(id);
+    const rows = await this.authorService.findOne(id);
     const data = {
       data: rows,
     };
@@ -35,8 +35,8 @@ export class GenreController {
   }
 
   @Post()
-  async create(@Body() createGenreDto: CreateGenreDto) {
-    const nuevo = await this.genreService.create(createGenreDto);
+  async create(@Body() createAuthorDto: CreateAuthorDto) {
+    const nuevo = await this.authorService.create(createAuthorDto);
     const data = {
       data: nuevo,
       message: 'Registro creado correctamente',
@@ -45,7 +45,7 @@ export class GenreController {
   }
   @Delete()
   async removeAll() {
-    const dato = await this.genreService.deleteAllGenres();
+    const dato = await this.authorService.deleteAllAuthors();
     const data = {
       data: dato,
       message: 'Registros eliminados correctamente',
@@ -56,7 +56,7 @@ export class GenreController {
   // Eliminar un objeto
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    const dato = await this.genreService.remove(id);
+    const dato = await this.authorService.remove(id);
     const data = {
       data: dato,
       message: 'Registro eliminado correctamente',

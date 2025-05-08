@@ -11,7 +11,7 @@ import {
 import { Book } from './book.entity';
 
 @Entity()
-export class author {
+export class Author {
   @PrimaryGeneratedColumn('increment', { type: 'int4' })
   id: number;
 
