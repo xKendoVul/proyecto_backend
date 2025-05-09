@@ -7,8 +7,11 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Genre } from './genre.entity';
+import { Author } from './author.entity';
 
 @Entity()
 export class Book {
@@ -30,8 +33,11 @@ export class Book {
   })
   genre: Genre[];
 
-  @Column({ type: 'varchar', length: 50 })
-  author: string;
+  @ManyToOne(() => Author, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
+  author: Author;
 
   @Column({ type: 'varchar', length: 50 })
   publisher: string;
@@ -59,5 +65,4 @@ export class Book {
     nullable: true,
   })
   deletedAt?: Date;
-  book: Genre;
 }

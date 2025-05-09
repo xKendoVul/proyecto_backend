@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { CreateGenreDto, FilterGenreDto } from '../dto/genre.dto';
 import { GenreService } from '../services/genre.service';
-import {  BooksService } from '../services/books.service';
 
 @Controller('genre')
 export class GenreController {

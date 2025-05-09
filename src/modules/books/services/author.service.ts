@@ -8,11 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import { Author } from '../entities/author.entity';
-import {
-  CreateAuthorDto,
-  UpdateAuthorDto,
-  FilterAuthorDto,
-} from '../dto/author.dto';
+import { CreateAuthorDto, FilterAuthorDto } from '../dto/author.dto';
 
 @Injectable()
 export class AuthorService {

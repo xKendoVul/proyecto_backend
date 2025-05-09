@@ -9,6 +9,7 @@ import {
 import { CreateBookDto, UpdateBookDto, FilterBookDto } from '../dto/book.dto';
 import { FindOptionsWhere, Repository, ILike } from 'typeorm';
 import { Genre } from '../entities/genre.entity';
+import { Author } from '../entities/author.entity';
 import { Book } from '../entities/book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -21,6 +22,8 @@ export class BooksService {
     private readonly bookRepository: Repository<Book>,
     @InjectRepository(Genre)
     private readonly genreRepository: Repository<Genre>,
+    @InjectRepository(Author)
+    private readonly authorRepository: Repository<Author>,
   ) {}
 
   async findOne(id: number) {

@@ -1,6 +1,6 @@
 interface SeedBooks {
   title: string;
-  genre_id: number | number[];
+  genre_id: number[];
   author_id: number;
   publisher: string;
   publication_year: number;
@@ -34,7 +34,7 @@ export const initialData: SeedData = {
   books: [
     {
       title: 'El senor de los anillos',
-      genre_id: 1,
+      genre_id: [1],
       author_id: 1,
       publisher: 'Editorial XYZ',
       publication_year: 2001,
@@ -44,7 +44,7 @@ export const initialData: SeedData = {
     },
     {
       title: 'El hobbit',
-      genre_id: 1,
+      genre_id: [1],
       author_id: 1,
       publisher: 'Editorial ABC',
       publication_year: 2005,
@@ -64,7 +64,7 @@ export const initialData: SeedData = {
     },
     {
       title: 'Cien años de soledad',
-      genre_id: 4,
+      genre_id: [4],
       author_id: 3,
       publisher: 'Editorial GHI',
       publication_year: 2015,
