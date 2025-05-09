@@ -60,13 +60,27 @@ export class BooksService {
   }
 
   async create(createBookDto: CreateBookDto) {
-    try {
-      const book = this.bookRepository.create(createBookDto);
-      await this.bookRepository.save(book);
-      return book;
-    } catch (error) {
-      this.handleDBException(error);
+    const {
+      title,
+      publisher,
+      publication_year,
+      isAvailable,
+      author_id,
+      genre_id,
+    } = createBookDto;
+    const author = await this.authorRepository.findOneBy({ id: author_id });
+    if (!author) {
+      throw new NotFoundException(
+        `El autor con id ${author_id} no fue encontrado`,
+      );
     }
+    const genreId = Array.isArray(genre_id) ? genre_id : [genre_id];
+    const genres = await this.genreRepository.findByIds(genreId)
+    if (genres.length === 0) {
+      throw new NotFoundException(
+        
+      )
+    } 
   }
 
   async update(id: number, changes: UpdateBookDto) {

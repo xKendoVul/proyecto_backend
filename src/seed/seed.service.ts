@@ -31,16 +31,22 @@ export class SeedService {
   private async insertNewBooks() {
     await this.bookService.deleteAllBooks();
 
-    const cars = initialData.books;
-    const insertPromises: Promise<Book | undefined>[] = [];
+    for (const book of initialData.books) {
+      const author = await this.authorService.findOne(book.author_id);
 
-    cars.forEach((book) => {
-      insertPromises.push(this.bookService.create(book));
-    });
+      const genres_id = Array.isArray(book.genre_id)
+        ? book.genre_id
+        : [book.genre_id];
+      const genres = await Promise.all(
+        genres_id.map((id) => this.genreService.findOne(id)),
+      );
 
-    await Promise.all(insertPromises);
-
-    return true;
+      await this.bookService.create({
+        ...book,
+        author,
+        genres,
+      });
+    }
   }
 
   private async insertNewGenres() {
