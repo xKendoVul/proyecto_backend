@@ -19,7 +19,6 @@ export class BooksController {
   // optener el objeto junto con la paginacion
   @Get()
   async getBooksAll(@Query() params: FilterBookDto) {
-    // console.log(PaginationDto);
     const rows = await this.BooksService.findAll(params);
 
     const data = {

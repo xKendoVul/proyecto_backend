@@ -32,19 +32,13 @@ export class SeedService {
     await this.bookService.deleteAllBooks();
 
     for (const book of initialData.books) {
-      const author = await this.authorService.findOne(book.author_id);
-
-      const genres_id = Array.isArray(book.genre_id)
-        ? book.genre_id
-        : [book.genre_id];
-      const genres = await Promise.all(
-        genres_id.map((id) => this.genreService.findOne(id)),
-      );
-
       await this.bookService.create({
-        ...book,
-        author,
-        genres,
+        title: book.title,
+        publisher: book.publisher,
+        publication_year: book.publication_year,
+        isAvailable: book.isAvailable,
+        author_id: book.author_id,
+        genre_id: book.genre_id,
       });
     }
   }

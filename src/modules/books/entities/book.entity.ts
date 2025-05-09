@@ -33,9 +33,7 @@ export class Book {
   })
   genre: Genre[];
 
-  @ManyToOne(() => Author, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => Author, (author) => author.books, { eager: true })
   @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
   author: Author;
 

@@ -27,8 +27,7 @@ export class CreateBookDto {
   @IsNotEmpty()
   readonly genre_id: number[];
 
-  @IsString()
-  @MinLength(3)
+  @IsNumber()
   @ApiProperty()
   readonly author_id: number;
 

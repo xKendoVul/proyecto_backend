@@ -5,7 +5,6 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-// import { CreateGenreDto } from '../dto/genre.dto';
 import { CreateBookDto, UpdateBookDto, FilterBookDto } from '../dto/book.dto';
 import { FindOptionsWhere, Repository, ILike } from 'typeorm';
 import { Genre } from '../entities/genre.entity';
@@ -54,6 +53,7 @@ export class BooksService {
       take: limit,
       skip: offset,
       relations: {
+        author: true,
         genre: true,
       },
     });

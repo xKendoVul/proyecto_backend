@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToMany,
+  OneToMany,
 } from 'typeorm';
 
 import { Book } from './book.entity';
@@ -18,7 +18,7 @@ export class Author {
   @Column({ type: 'varchar', length: 50 })
   name: string;
 
-  @ManyToMany(() => Book, (book) => book.author)
+  @OneToMany(() => Book, (book) => book.author)
   books: Book[];
 
   @CreateDateColumn({
