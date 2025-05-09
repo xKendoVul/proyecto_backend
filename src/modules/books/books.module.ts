@@ -7,8 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Genre } from './entities/genre.entity';
 import { Book } from './entities/book.entity';
 import { Author } from './entities/author.entity';
+<<<<<<< HEAD
 import { AuthorController } from './controllers/author.controller';
 import { AuthorService } from './services/author.service';
+=======
+import { AuthorService } from './services/author.service';
+import { AuthorController } from './controllers/author.controller';
+>>>>>>> 436d768ec6b966f82ea8b32aa27fc2e5d6a9508b
 
 @Module({
   imports: [
