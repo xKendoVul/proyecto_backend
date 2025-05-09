@@ -6,14 +6,18 @@ import { BooksService } from './services/books.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Genre } from './entities/genre.entity';
 import { Book } from './entities/book.entity';
+import { Author } from './entities/author.entity';
+import { AuthorService } from './services/author.service';
+import { AuthorController } from './controllers/author.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Book]),
     TypeOrmModule.forFeature([Genre]),
+    TypeOrmModule.forFeature([Author]),
   ],
-  controllers: [BooksController, GenreController],
-  providers: [BooksService, GenreService],
-  exports: [TypeOrmModule, BooksService, GenreService],
+  controllers: [BooksController, GenreController, AuthorController],
+  providers: [BooksService, GenreService, AuthorService],
+  exports: [TypeOrmModule, BooksService, GenreService, AuthorService],
 })
 export class BooksModule {}
