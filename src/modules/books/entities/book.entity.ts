@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { Genre } from './genre.entity';
 import { Author } from './author.entity';
+import { User } from 'src/auth/entities/user.entity';
 
 @Entity()
 export class Book {
@@ -45,6 +46,10 @@ export class Book {
 
   @Column({ type: 'bool', default: true })
   isAvailable: boolean;
+
+  @ManyToOne(() => User, (user) => user.book, { eager: true })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @CreateDateColumn({
     type: 'timestamp',

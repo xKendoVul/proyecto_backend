@@ -9,9 +9,10 @@ import { Book } from './entities/book.entity';
 import { Author } from './entities/author.entity';
 import { AuthorController } from './controllers/author.controller';
 import { AuthorService } from './services/author.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, Genre, Author])],
+  imports: [TypeOrmModule.forFeature([Book, Genre, Author]), AuthModule],
   controllers: [BooksController, GenreController, AuthorController],
   providers: [BooksService, GenreService, AuthorService],
   exports: [TypeOrmModule, BooksService, GenreService, AuthorService],

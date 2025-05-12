@@ -6,6 +6,9 @@ import { Author } from 'src/modules/books/entities/author.entity';
 import { Book } from 'src/modules/books/entities/book.entity';
 import { Genre } from 'src/modules/books/entities/genre.entity';
 import { GenreService } from 'src/modules/books/services/genre.service';
+import { User } from 'src/auth/entities/user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class SeedService {
@@ -13,34 +16,63 @@ export class SeedService {
     private readonly bookService: BooksService,
     private readonly genreService: GenreService,
     private readonly authorService: AuthorService,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async runSeedBooks() {
-    await this.insertNewBooks();
+    await this.deleteTables();
+
+    const adminUser = await this.insertUsers();
+
+    await this.insertNewBooks(adminUser);
     return 'SEED EXECUTED BOOKS';
   }
   async runSeedGenres() {
+    await this.deleteTables();
     await this.insertNewGenres();
     return 'SEED EXECUTED GENRES';
   }
   async runSeedAuthors() {
+    await this.deleteTables();
     await this.insertNewAuthors();
     return 'SEED EXECUTED AUTHORS';
   }
 
-  private async insertNewBooks() {
+  private async deleteTables() {
     await this.bookService.deleteAllBooks();
 
-    for (const book of initialData.books) {
-      await this.bookService.create({
-        title: book.title,
-        publisher: book.publisher,
-        publication_year: book.publication_year,
-        isAvailable: book.isAvailable,
-        author_id: book.author_id,
-        genre_id: book.genre_id,
-      });
-    }
+    const queryBuilder = this.userRepository.createQueryBuilder();
+
+    await queryBuilder.delete().where({}).execute();
+  }
+
+  private async insertUsers() {
+    const seedUsers = initialData.users;
+
+    const users: User[] = [];
+
+    seedUsers.forEach((user) => {
+      users.push(this.userRepository.create(user));
+    });
+
+    const dbUser = await this.userRepository.save(seedUsers);
+
+    return dbUser[0];
+  }
+  private async insertNewBooks(user: User) {
+    await this.bookService.deleteAllBooks();
+
+    const books = initialData.books;
+    const insertPromises: Promise<Book | undefined>[] = [];
+
+    books.forEach((book) => {
+      insertPromises.push(this.bookService.create(book, user));
+    });
+
+    await Promise.all(insertPromises);
+    return true;
   }
 
   private async insertNewGenres() {

@@ -10,6 +10,9 @@ import {
 } from '@nestjs/common';
 import { BooksService } from '../services/books.service';
 import { CreateBookDto, FilterBookDto, UpdateBookDto } from '../dto/book.dto';
+import { Auth, GetUser } from 'src/auth/decorators';
+import { ValidRoles } from 'src/auth/interfaces';
+import { User } from 'src/auth/entities/user.entity';
 // import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('books')
@@ -39,8 +42,9 @@ export class BooksController {
 
   // Crear un objeto nuevo
   @Post()
-  async create(@Body() CreateBookDto: CreateBookDto) {
-    const nuevo = await this.BooksService.create(CreateBookDto);
+  @Auth(ValidRoles.admin)
+  async create(@Body() CreateBookDto: CreateBookDto, @GetUser() user: User) {
+    const nuevo = await this.BooksService.create(CreateBookDto, user);
     const data = {
       data: nuevo,
       message: 'Registro creado correctamente',
@@ -49,8 +53,13 @@ export class BooksController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateBookDto: UpdateBookDto) {
-    const datos = await this.BooksService.update(id, updateBookDto);
+  @Auth(ValidRoles.admin)
+  async update(
+    @Param('id') id: number,
+    @Body() updateBookDto: UpdateBookDto,
+    @GetUser() user: User,
+  ) {
+    const datos = await this.BooksService.update(id, updateBookDto, user);
     const data = {
       data: datos,
       message: 'Registro actualizado correctamente',
@@ -59,6 +68,7 @@ export class BooksController {
   }
 
   @Delete()
+  @Auth(ValidRoles.admin)
   async removeAll() {
     const dato = await this.BooksService.deleteAllBooks();
     const data = {

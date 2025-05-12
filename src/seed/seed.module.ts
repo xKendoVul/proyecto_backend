@@ -3,10 +3,11 @@ import { SeedService } from './seed.service';
 import { SeedController } from './seed.controller';
 import { BooksModule } from 'src/modules/books/books.module';
 import { LoansModule } from 'src/modules/loans/loans.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [SeedController],
   providers: [SeedService],
-  imports: [BooksModule, LoansModule],
+  imports: [BooksModule, LoansModule, AuthModule],
 })
 export class SeedModule {}

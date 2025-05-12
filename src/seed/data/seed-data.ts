@@ -24,13 +24,41 @@ interface SeedAuthors {
   deletedAt?: Date;
 }
 
+interface SeedUsers {
+  email: string;
+  fullName: string;
+  password: string;
+  roles: string[];
+}
+
 interface SeedData {
+  users: SeedUsers[];
   books: SeedBooks[];
   genres: SeedGenres[];
   authors: SeedAuthors[];
 }
 
 export const initialData: SeedData = {
+  users: [
+    {
+      email: 'test1@google.com',
+      fullName: 'Test One',
+      password: 'Abc123',
+      roles: ['admin'],
+    },
+    {
+      email: 'test2@google.com',
+      fullName: 'Test Two',
+      password: 'Abc123',
+      roles: ['user', 'super-user'],
+    },
+    {
+      email: 'gabrielgriffin@gmail.com',
+      fullName: 'Gabriel Griffin',
+      password: 'Abc123',
+      roles: ['admin', 'super-user'],
+    },
+  ],
   books: [
     {
       title: 'El senor de los anillos',

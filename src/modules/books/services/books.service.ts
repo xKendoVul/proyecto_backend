@@ -11,6 +11,7 @@ import { Genre } from '../entities/genre.entity';
 import { Author } from '../entities/author.entity';
 import { Book } from '../entities/book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class BooksService {
@@ -59,7 +60,7 @@ export class BooksService {
     });
   }
 
-  async create(createBookDto: CreateBookDto) {
+  async create(createBookDto: CreateBookDto, user: User) {
     const {
       title,
       publisher,
@@ -92,15 +93,16 @@ export class BooksService {
       genre: genres,
       createdAt: new Date(),
       updatedAt: new Date(),
+      user,
     });
 
     return await this.bookRepository.save(newBook);
   }
 
-  async update(id: number, changes: UpdateBookDto) {
+  async update(id: number, changes: UpdateBookDto, user: User) {
     const book = await this.bookRepository.findOne({
       where: { id },
-      relations: { genre: true },
+      relations: { genre: true, user: true },
     });
 
     if (!book) {
@@ -119,6 +121,10 @@ export class BooksService {
         );
       }
       book.genre = [genre];
+
+      if (user) {
+        book.user = user;
+      }
     }
 
     this.bookRepository.merge(book, changes);
