@@ -67,9 +67,9 @@ export class SeedService {
     const books = initialData.books;
     const insertPromises: Promise<Book | undefined>[] = [];
 
-    // books.forEach((book) => {
-    //   insertPromises.push(this.bookService.create(book, user));
-    // });
+    books.forEach((book) => {
+      insertPromises.push(this.bookService.create(book, user));
+    });
 
     await Promise.all(insertPromises);
     return true;

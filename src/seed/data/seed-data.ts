@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcrypt';
+
 interface SeedBooks {
   title: string;
   genre_id: number[];
@@ -26,7 +28,7 @@ interface SeedAuthors {
 
 interface SeedUsers {
   email: string;
-  fullName: string;
+  fullname: string;
   password: string;
   roles: string[];
 }
@@ -42,20 +44,20 @@ export const initialData: SeedData = {
   users: [
     {
       email: 'test1@google.com',
-      fullName: 'Test One',
-      password: 'Abc123',
+      fullname: 'Test One',
+      password: bcrypt.hashSync('Abc123', 10),
       roles: ['admin'],
     },
     {
       email: 'test2@google.com',
-      fullName: 'Test Two',
-      password: 'Abc123',
+      fullname: 'Test Two',
+      password: bcrypt.hashSync('Abc123', 10),
       roles: ['user', 'super-user'],
     },
     {
       email: 'gabrielgriffin@gmail.com',
-      fullName: 'Gabriel Griffin',
-      password: 'Abc123',
+      fullname: 'Gabriel Griffin',
+      password: bcrypt.hashSync('Abc123', 10),
       roles: ['admin', 'super-user'],
     },
   ],
