@@ -67,9 +67,9 @@ export class SeedService {
     const books = initialData.books;
     const insertPromises: Promise<Book | undefined>[] = [];
 
-    books.forEach((book) => {
-      insertPromises.push(this.bookService.create(book, user));
-    });
+    // books.forEach((book) => {
+    //   insertPromises.push(this.bookService.create(book, user));
+    // });
 
     await Promise.all(insertPromises);
     return true;
@@ -78,12 +78,12 @@ export class SeedService {
   private async insertNewGenres() {
     await this.genreService.deleteAllGenres();
 
-    const brands = initialData.genres;
+    const genres = initialData.genres;
     const insertPromises: Promise<Genre | undefined>[] = [];
 
-    brands.forEach((genre) => {
-      insertPromises.push(this.genreService.create(genre));
-    });
+    // genres.forEach((genre) => {
+    //   insertPromises.push(this.genreService.create(genre));
+    // });
 
     await Promise.all(insertPromises);
 

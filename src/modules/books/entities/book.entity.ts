@@ -27,9 +27,11 @@ export class Book {
     name: 'book_genre',
     joinColumn: {
       name: 'book_id',
+      referencedColumnName: 'id',
     },
     inverseJoinColumn: {
       name: 'genre_id',
+      referencedColumnName: 'id',
     },
   })
   genre: Genre[];

@@ -1,4 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
@@ -8,6 +9,8 @@ import {
   IsString,
   MinLength,
   Min,
+  IsArray,
+  ArrayNotEmpty,
 } from 'class-validator';
 
 export class CreateBookDto {
@@ -21,8 +24,10 @@ export class CreateBookDto {
   @ApiProperty()
   title: string;
 
-  @IsNumber()
-  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @Type(() => Number)
+  @IsInt({ each: true })
   @ApiProperty()
   @IsNotEmpty()
   readonly genre_id: number[];
@@ -44,6 +49,7 @@ export class CreateBookDto {
   @IsOptional()
   @ApiProperty()
   isAvailable?: boolean;
+
 }
 
 export class UpdateBookDto extends PartialType(CreateBookDto) {}

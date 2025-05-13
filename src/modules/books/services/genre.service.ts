@@ -19,6 +19,16 @@ export class GenreService {
     private readonly genreRepository: Repository<Genre>,
   ) {}
 
+  async create(createGenreDto: CreateGenreDto) {
+    try {
+      const genre = this.genreRepository.create(createGenreDto);
+      await this.genreRepository.save(genre);
+      return genre;
+    } catch (error) {
+      this.handleDBException(error);
+    }
+  }
+
   findAll(params?: FilterGenreDto) {
     const { limit, offset, name } = params || {};
     const where: FindOptionsWhere<Genre> = {};
@@ -52,20 +62,12 @@ export class GenreService {
     return genre;
   }
 
-  async create(createGenreDto: CreateGenreDto) {
-    try {
-      const genre = this.genreRepository.create(createGenreDto);
-      await this.genreRepository.save(genre);
-      return genre;
-    } catch (error) {
-      this.handleDBException(error);
-    }
-  }
-
   async remove(id: number) {
     const exist = await this.genreRepository.existsBy({ id });
-    if (!exist)  {
-      throw new NotFoundException(`El genero con id ${id} no fue encontrado en la base de datos`);
+    if (!exist) {
+      throw new NotFoundException(
+        `El genero con id ${id} no fue encontrado en la base de datos`,
+      );
     }
     await this.genreRepository.delete(id);
     return {
@@ -76,7 +78,7 @@ export class GenreService {
 
   async deleteAllGenres() {
     const query = this.genreRepository.createQueryBuilder('genre');
-    try { 
+    try {
       return await query.delete().where({}).execute();
     } catch (error) {
       this.handleDBException(error);
