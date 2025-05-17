@@ -14,6 +14,8 @@ import { AuthorService } from '../services/author.service';
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
+  //** -------------------------------------------------------- */
+
   @Get()
   async getAuthorAll(@Query() params: FilterAuthorDto) {
     const rows = await this.authorService.findAll(params);
@@ -23,6 +25,8 @@ export class AuthorController {
     };
     return data;
   }
+
+  //** -------------------------------------------------------- */
 
   // optener un objeto por id
   @Get(':id')
@@ -34,6 +38,8 @@ export class AuthorController {
     return data;
   }
 
+  //** -------------------------------------------------------- */
+
   @Post()
   async create(@Body() createAuthorDto: CreateAuthorDto) {
     const nuevo = await this.authorService.create(createAuthorDto);
@@ -43,6 +49,8 @@ export class AuthorController {
     };
     return data;
   }
+
+  //** -------------------------------------------------------- */
   @Delete()
   async removeAll() {
     const dato = await this.authorService.deleteAllAuthors();
@@ -52,8 +60,9 @@ export class AuthorController {
     };
     return data;
   }
-  // Actualizar un objeto
-  // Eliminar un objeto
+
+  //** -------------------------------------------------------- */
+
   @Delete(':id')
   async remove(@Param('id') id: number) {
     const dato = await this.authorService.remove(id);

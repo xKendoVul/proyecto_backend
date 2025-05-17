@@ -19,6 +19,36 @@ export class AuthorService {
     private readonly authorRepository: Repository<Author>,
   ) {}
 
+  //** -------------------------------------------------------- */
+
+  async create(createAuthorDto: CreateAuthorDto) {
+    try {
+      const author = this.authorRepository.create(createAuthorDto);
+      await this.authorRepository.save(author);
+      return author;
+    } catch (error) {
+      this.handleDBException(error);
+    }
+  }
+
+  //** -------------------------------------------------------- */
+
+  async findOne(id: number) {
+    const author = await this.authorRepository.findOne({
+      where: { id: id },
+      relations: { books: true },
+    });
+
+    if (!author) {
+      throw new NotFoundException(
+        `El genero con id ${id} no fue encontrado en la base de datos`,
+      );
+    }
+    return author;
+  }
+
+  //** -------------------------------------------------------- */
+
   findAll(params?: FilterAuthorDto) {
     const { limit, offset, name } = params || {};
     const where: FindOptionsWhere<Author> = {};
@@ -38,29 +68,7 @@ export class AuthorService {
     });
   }
 
-  async findOne(id: number) {
-    const author = await this.authorRepository.findOne({
-      where: { id: id },
-      relations: { books: true },
-    });
-
-    if (!author) {
-      throw new NotFoundException(
-        `El genero con id ${id} no fue encontrado en la base de datos`,
-      );
-    }
-    return author;
-  }
-
-  async create(createAuthorDto: CreateAuthorDto) {
-    try {
-      const author = this.authorRepository.create(createAuthorDto);
-      await this.authorRepository.save(author);
-      return author;
-    } catch (error) {
-      this.handleDBException(error);
-    }
-  }
+  //** -------------------------------------------------------- */
 
   async remove(id: number) {
     const exist = await this.authorRepository.existsBy({ id });
@@ -76,6 +84,8 @@ export class AuthorService {
     };
   }
 
+  //** -------------------------------------------------------- */
+
   async deleteAllAuthors() {
     const query = this.authorRepository.createQueryBuilder('author');
     try {
@@ -84,6 +94,8 @@ export class AuthorService {
       this.handleDBException(error);
     }
   }
+
+  //** -------------------------------------------------------- */
 
   private handleDBException(error: any) {
     if (error.code === '23505') throw new BadRequestException(error.detail);
