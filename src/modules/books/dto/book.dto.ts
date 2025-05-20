@@ -24,32 +24,31 @@ export class CreateBookDto {
   @ApiProperty()
   title: string;
 
-  @IsArray()
-  @ArrayNotEmpty()
-  @Type(() => Number)
-  @IsInt({ each: true })
-  @ApiProperty()
-  @IsNotEmpty()
-  readonly genre_id: number[];
-
-  @IsNumber()
-  @ApiProperty()
-  readonly author_id: number;
-
   @IsString()
   @MinLength(3)
   @ApiProperty()
-  publisher: string;
+  publisher?: string;
 
   @IsInt()
   @IsPositive()
   @ApiProperty()
-  publication_year: number;
+  publication_year?: number;
 
   @IsOptional()
   @ApiProperty()
   isAvailable?: boolean;
 
+  @IsNumber()
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly author_id?: number;
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @Type(() => Number)
+  @IsInt({ each: true })
+  @ApiProperty()
+  readonly genre_id?: number[];
 }
 
 export class UpdateBookDto extends PartialType(CreateBookDto) {}

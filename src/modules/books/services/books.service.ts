@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateBookDto, UpdateBookDto, FilterBookDto } from '../dto/book.dto';
-import { FindOptionsWhere, Repository, ILike } from 'typeorm';
+import { FindOptionsWhere, Repository, ILike, In } from 'typeorm';
 import { Genre } from '../entities/genre.entity';
 import { Author } from '../entities/author.entity';
 import { Book } from '../entities/book.entity';
@@ -62,7 +62,28 @@ export class BooksService {
 
   async create(createBookDto: CreateBookDto, user: User) {
     try {
-      const book = this.bookRepository.create({ ...createBookDto, user });
+      const {
+        title,
+        publisher,
+        publication_year,
+        isAvailable,
+        author_id,
+        genre_id,
+      } = createBookDto;
+      const genres = await this.genreRepository.findBy({
+        id: In(genre_id ?? []),
+      });
+
+      const book = this.bookRepository.create({
+        title,
+        publisher,
+        publication_year,
+        isAvailable,
+        genre: genres,
+        author_id,
+        user,
+      });
+      // const book = this.bookRepository.create({ ...createBookDto, user });
       await this.bookRepository.save(book);
       return book;
     } catch (error) {

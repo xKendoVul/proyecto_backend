@@ -22,6 +22,9 @@ export class Book {
   @Column({ type: 'varchar', length: 100 })
   title: string;
 
+  @Column({ type: 'int4', nullable: false })
+  author_id: number;
+
   @ManyToMany(() => Genre, (genre) => genre.books)
   @JoinTable({
     name: 'book_genre',
@@ -36,7 +39,7 @@ export class Book {
   })
   genre: Genre[];
 
-  @ManyToOne(() => Author, (author) => author.books, { eager: true })
+  @ManyToOne(() => Author)
   @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
   author: Author;
 

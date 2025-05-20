@@ -17,7 +17,7 @@ export class CreateGenreDto {
   @IsString()
   @MinLength(3)
   @ApiProperty() // Asegúrate de que ApiProperty esté aquí
-  name: string;
+  name?: string;
 }
 
 export class UpdateGenreDto extends PartialType(CreateGenreDto) {}
