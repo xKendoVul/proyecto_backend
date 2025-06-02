@@ -6,8 +6,13 @@ import {
   Query,
   Param,
   Delete,
+  Patch,
 } from '@nestjs/common';
-import { CreateGenreDto, FilterGenreDto } from '../dto/genre.dto';
+import {
+  CreateGenreDto,
+  FilterGenreDto,
+  UpdateGenreDto,
+} from '../dto/genre.dto';
 import { GenreService } from '../services/genre.service';
 
 @Controller('genre')
@@ -42,6 +47,12 @@ export class GenreController {
     };
     return data;
   }
+
+  @Patch(':id')
+  update(@Param('id') id: number, @Body() updateGenreDto: UpdateGenreDto) {
+    return this.genreService.update(id, updateGenreDto);
+  }
+
   @Delete()
   async removeAll() {
     const dato = await this.genreService.deleteAllGenres();

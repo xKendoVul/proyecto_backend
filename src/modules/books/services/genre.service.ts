@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import { Genre } from '../entities/genre.entity';
-import { CreateGenreDto, FilterGenreDto } from '../dto/genre.dto';
+import { CreateGenreDto, FilterGenreDto, UpdateGenreDto } from '../dto/genre.dto';
 
 @Injectable()
 export class GenreService {
@@ -60,6 +60,26 @@ export class GenreService {
       );
     }
     return genre;
+  }
+
+  async update(id: number, updateGenreDto: UpdateGenreDto) {
+    const genre = await this.genreRepository.findOne({ where: { id } });
+
+    if (!genre) {
+      throw new NotFoundException(`Brand con id ${id} no encontrado`);
+    }
+
+    try {
+      this.genreRepository.merge(genre, updateGenreDto);
+      await this.genreRepository.save(genre);
+
+      return {
+        message: 'Registro actualizado  con éxito',
+        data: genre,
+      };
+    } catch (error) {
+      this.handleDBException(error);
+    }
   }
 
   async remove(id: number) {
