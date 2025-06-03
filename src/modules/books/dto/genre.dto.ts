@@ -21,16 +21,3 @@ export class CreateGenreDto {
 }
 
 export class UpdateGenreDto extends PartialType(CreateGenreDto) {}
-
-export class FilterGenreDto {
-  @IsOptional()
-  @IsPositive()
-  limit: number;
-
-  @IsOptional()
-  @Min(0)
-  offset: number;
-
-  @IsOptional()
-  name: string;
-}

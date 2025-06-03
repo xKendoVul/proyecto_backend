@@ -12,6 +12,7 @@ import { Author } from '../entities/author.entity';
 import { Book } from '../entities/book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/entities/user.entity';
+import { Publisher } from '../entities/publisher.entity';
 
 @Injectable()
 export class BooksService {
@@ -24,6 +25,8 @@ export class BooksService {
     private readonly genreRepository: Repository<Genre>,
     @InjectRepository(Author)
     private readonly authorRepository: Repository<Author>,
+    @InjectRepository(Publisher)
+    private readonly publisherRepository: Repository<Publisher>,
   ) {}
 
   async findOne(id: number) {
@@ -64,26 +67,41 @@ export class BooksService {
     try {
       const {
         title,
-        publisher,
         publication_year,
         isAvailable,
         author_id,
+        publisher_id,
         genre_id,
       } = createBookDto;
       const genres = await this.genreRepository.findBy({
         id: In(genre_id ?? []),
       });
 
+      const author = await this.authorRepository.findOneBy({ id: author_id });
+      if (!author) {
+        throw new NotFoundException(
+          `El autor con id ${author_id} no fue encontrado`,
+        );
+      }
+
+      const publisher = await this.publisherRepository.findOneBy({
+        id: publisher_id,
+      });
+      if (!publisher) {
+        throw new NotFoundException(
+          `El publisher con id ${publisher_id} no fue encontrado`,
+        );
+      }
+
       const book = this.bookRepository.create({
         title,
-        publisher,
         publication_year,
         isAvailable,
         genre: genres,
-        author_id,
+        publisher,
+        author,
         user,
       });
-      // const book = this.bookRepository.create({ ...createBookDto, user });
       await this.bookRepository.save(book);
       return book;
     } catch (error) {
@@ -94,32 +112,51 @@ export class BooksService {
   async update(id: number, changes: UpdateBookDto, user: User) {
     const book = await this.bookRepository.findOne({
       where: { id },
-      relations: { genre: true, user: true },
+      relations: { genre: true, user: true, publisher: true },
     });
 
     if (!book) {
       throw new NotFoundException(`El libro con id ${id} no fue encontrado`);
     }
 
+    // Actualizar géneros (muchos a muchos)
     if (changes.genre_id) {
-      const genre = await this.genreRepository.findOneBy({
-        id: Array.isArray(changes.genre_id)
-          ? changes.genre_id[0]
-          : changes.genre_id,
+      const genres = await this.genreRepository.findBy({
+        id: In(
+          Array.isArray(changes.genre_id)
+            ? changes.genre_id
+            : [changes.genre_id],
+        ),
       });
-      if (!genre) {
+      if (!genres.length) {
         throw new NotFoundException(
-          `El genero con id ${Array.isArray(changes.genre_id) ? changes.genre_id.join(', ') : changes.genre_id} no fue encontrado`,
+          `No se encontraron géneros con los ids: ${Array.isArray(changes.genre_id) ? changes.genre_id.join(', ') : changes.genre_id}`,
         );
       }
-      book.genre = [genre];
-
-      if (user) {
-        book.user = user;
-      }
+      book.genre = genres;
     }
 
+    // Actualizar publisher (uno a muchos)
+    if (changes.publisher_id) {
+      const publisher = await this.publisherRepository.findOneBy({
+        id: changes.publisher_id,
+      });
+      if (!publisher) {
+        throw new NotFoundException(
+          `El publisher con id ${changes.publisher_id} no fue encontrado`,
+        );
+      }
+      book.publisher = publisher;
+    }
+
+    // Actualizar usuario si es necesario
+    if (user) {
+      book.user = user;
+    }
+
+    // Actualizar otros campos simples
     this.bookRepository.merge(book, changes);
+
     const updated = await this.bookRepository.save(book);
 
     return {

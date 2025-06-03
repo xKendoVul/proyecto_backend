@@ -8,24 +8,17 @@ import {
   Delete,
   Patch,
 } from '@nestjs/common';
-import {
-  CreateGenreDto,
-  FilterGenreDto,
-  UpdateGenreDto,
-} from '../dto/genre.dto';
+import { CreateGenreDto, UpdateGenreDto } from '../dto/genre.dto';
 import { GenreService } from '../services/genre.service';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('genre')
 export class GenreController {
   constructor(private readonly genreService: GenreService) {}
-  @Get()
-  async getBooksAll(@Query() params: FilterGenreDto) {
-    const rows = await this.genreService.findAll(params);
 
-    const data = {
-      data: rows,
-    };
-    return data;
+  @Get()
+  async getFindAll(@Query() pagination: PaginationDto) {
+    return this.genreService.findAll(pagination);
   }
 
   // optener un objeto por id

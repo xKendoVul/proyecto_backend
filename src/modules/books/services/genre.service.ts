@@ -8,7 +8,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import { Genre } from '../entities/genre.entity';
-import { CreateGenreDto, FilterGenreDto, UpdateGenreDto } from '../dto/genre.dto';
+import { CreateGenreDto, UpdateGenreDto } from '../dto/genre.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class GenreService {
@@ -29,23 +30,12 @@ export class GenreService {
     }
   }
 
-  findAll(params?: FilterGenreDto) {
-    const { limit, offset, name } = params || {};
-    const where: FindOptionsWhere<Genre> = {};
-
-    if (name) {
-      where.name = ILike(`%${name}%`);
-    }
-
-    return this.genreRepository.find({
-      order: { id: 'ASC' },
-      where,
-      take: limit,
-      skip: offset,
-      relations: {
-        books: true,
-      },
+  async findAll(pagination: PaginationDto) {
+    const [data, total] = await this.genreRepository.findAndCount({
+      take: pagination.limit,
+      skip: pagination.offset,
     });
+    return { data, total };
   }
 
   async findOne(id: number) {

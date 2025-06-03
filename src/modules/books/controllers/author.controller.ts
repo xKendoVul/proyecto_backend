@@ -6,22 +6,19 @@ import {
   Query,
   Param,
   Delete,
+  Patch,
 } from '@nestjs/common';
-import { CreateAuthorDto, FilterAuthorDto } from '../dto/author.dto';
+import { CreateAuthorDto } from '../dto/author.dto';
 import { AuthorService } from '../services/author.service';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('author')
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
   @Get()
-  async getAuthorAll(@Query() params: FilterAuthorDto) {
-    const rows = await this.authorService.findAll(params);
-
-    const data = {
-      data: rows,
-    };
-    return data;
+  async getAuthorAll(@Query() pagination: PaginationDto) {
+    return this.authorService.findAll(pagination);
   }
 
   // optener un objeto por id
@@ -43,17 +40,12 @@ export class AuthorController {
     };
     return data;
   }
-  @Delete()
-  async removeAll() {
-    const dato = await this.authorService.deleteAllAuthors();
-    const data = {
-      data: dato,
-      message: 'Registros eliminados correctamente',
-    };
-    return data;
+
+  @Patch(':id')
+  update(@Param('id') id: number, @Body() updateAuthorDto: CreateAuthorDto) {
+    return this.authorService.update(id, updateAuthorDto);
   }
-  // Actualizar un objeto
-  // Eliminar un objeto
+
   @Delete(':id')
   async remove(@Param('id') id: number) {
     const dato = await this.authorService.remove(id);

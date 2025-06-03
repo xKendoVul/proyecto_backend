@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { Genre } from './genre.entity';
 import { Author } from './author.entity';
+import { Publisher } from './publisher.entity';
 import { User } from 'src/auth/entities/user.entity';
 
 @Entity()
@@ -43,8 +44,9 @@ export class Book {
   @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
   author: Author;
 
-  @Column({ type: 'varchar', length: 50 })
-  publisher: string;
+  @ManyToOne(() => Publisher)
+  @JoinColumn({ name: 'publisher_id', referencedColumnName: 'id' })
+  publisher: Publisher;
 
   @Column({ type: 'int4' })
   publication_year: number;

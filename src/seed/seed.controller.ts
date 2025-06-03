@@ -7,19 +7,19 @@ import { ValidRoles } from 'src/auth/interfaces';
 export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 
-  @Get('books')
-  @Auth(ValidRoles.admin)
-  executeSeedBooks() {
-    return this.seedService.runSeedBooks();
-  }
+  // @Get('books')
+  // @Auth(ValidRoles.admin)
+  // executeSeedBooks() {
+  //   return this.seedService.runSeedBooks();
+  // }
 
-  @Get('genres')
-  executeSeedGenres() {
-    return this.seedService.runSeedGenres();
-  }
+  // @Get('genres')
+  // executeSeedGenres() {
+  //   return this.seedService.runSeedGenres();
+  // }
 
-  @Get('authors')
-  executeSeedAuthors() {
-    return this.seedService.runSeedAuthors();
-  }
+  // @Get('authors')
+  // executeSeedAuthors() {
+  //   return this.seedService.runSeedAuthors();
+  // }
 }
