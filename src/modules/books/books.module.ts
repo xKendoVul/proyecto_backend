@@ -10,11 +10,28 @@ import { Author } from './entities/author.entity';
 import { AuthorController } from './controllers/author.controller';
 import { AuthorService } from './services/author.service';
 import { AuthModule } from 'src/auth/auth.module';
+import { Publisher } from './entities/publisher.entity';
+import { PublisherController } from './controllers/publisher.controller';
+import { PublisherService } from './services/publisher.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, Genre, Author]), AuthModule],
-  controllers: [BooksController, GenreController, AuthorController],
-  providers: [BooksService, GenreService, AuthorService],
-  exports: [TypeOrmModule, BooksService, GenreService, AuthorService],
+  imports: [
+    TypeOrmModule.forFeature([Book, Genre, Author, Publisher]),
+    AuthModule,
+  ],
+  controllers: [
+    BooksController,
+    GenreController,
+    AuthorController,
+    PublisherController,
+  ],
+  providers: [BooksService, GenreService, AuthorService, PublisherService],
+  exports: [
+    TypeOrmModule,
+    BooksService,
+    GenreService,
+    AuthorService,
+    PublisherService,
+  ],
 })
 export class BooksModule {}

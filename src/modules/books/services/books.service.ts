@@ -5,14 +5,15 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateBookDto, UpdateBookDto, FilterBookDto } from '../dto/book.dto';
-import { FindOptionsWhere, Repository, ILike, In } from 'typeorm';
+import { CreateBookDto, UpdateBookDto } from '../dto/book.dto';
+import { Repository, In } from 'typeorm';
 import { Genre } from '../entities/genre.entity';
 import { Author } from '../entities/author.entity';
 import { Book } from '../entities/book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/entities/user.entity';
 import { Publisher } from '../entities/publisher.entity';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class BooksService {
@@ -43,25 +44,34 @@ export class BooksService {
     return book;
   }
 
-  findAll(params?: FilterBookDto) {
-    const { limit, offset, title } = params || {};
-    const where: FindOptionsWhere<Book> = {};
-
-    if (title) {
-      where.title = ILike(`%${title}%`);
-    }
-
-    return this.bookRepository.find({
+  async findAll(pagination: PaginationDto) {
+    const [data, total] = await this.bookRepository.findAndCount({
+      take: pagination.limit,
+      skip: pagination.offset,
       order: { id: 'ASC' },
-      where,
-      take: limit,
-      skip: offset,
-      relations: {
-        author: true,
-        genre: true,
-      },
+      relations: { genre: true, author: true, publisher: true },
     });
+    return { data, total };
   }
+  // findAll(params?: FilterBookDto) {
+  //   const { limit, offset, title } = params || {};
+  //   const where: FindOptionsWhere<Book> = {};
+
+  //   if (title) {
+  //     where.title = ILike(`%${title}%`);
+  //   }
+
+  //   return this.bookRepository.find({
+  //     order: { id: 'ASC' },
+  //     where,
+  //     take: limit,
+  //     skip: offset,
+  //     relations: {
+  //       author: true,
+  //       genre: true,
+  //     },
+  //   });
+  // }
 
   async create(createBookDto: CreateBookDto, user: User) {
     try {

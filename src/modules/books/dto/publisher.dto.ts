@@ -1,7 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
 
-export class CreateGenreDto {
+export class CreatePublisherDto {
   @IsOptional()
   @IsNumber()
   @ApiProperty()
@@ -9,8 +9,8 @@ export class CreateGenreDto {
 
   @IsString()
   @MinLength(3)
-  @ApiProperty() // Asegúrate de que ApiProperty esté aquí
+  @ApiProperty()
   name?: string;
 }
 
-export class UpdateGenreDto extends PartialType(CreateGenreDto) {}
+export class UpdatePublisherDto extends PartialType(CreatePublisherDto) {}
