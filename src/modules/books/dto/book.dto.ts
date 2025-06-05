@@ -8,7 +8,6 @@ import {
   IsPositive,
   IsString,
   MinLength,
-  Min,
   IsArray,
   ArrayNotEmpty,
 } from 'class-validator';
@@ -38,9 +37,9 @@ export class CreateBookDto {
   @IsNotEmpty()
   readonly author_id: number;
 
-  @IsString()
-  @MinLength(3)
+  @IsNumber()
   @ApiProperty()
+  @IsNotEmpty()
   readonly publisher_id: number;
 
   @IsArray()
@@ -49,19 +48,11 @@ export class CreateBookDto {
   @IsInt({ each: true })
   @ApiProperty()
   readonly genre_id: number[];
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
+  image: string;
 }
 
 export class UpdateBookDto extends PartialType(CreateBookDto) {}
-
-export class FilterBookDto {
-  @IsOptional()
-  @IsPositive()
-  limit: number;
-
-  @IsOptional()
-  @Min(0)
-  offset: number;
-
-  @IsOptional()
-  title: string;
-}

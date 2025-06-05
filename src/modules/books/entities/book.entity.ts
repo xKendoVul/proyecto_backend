@@ -23,9 +23,6 @@ export class Book {
   @Column({ type: 'varchar', length: 100 })
   title: string;
 
-  @Column({ type: 'int4', nullable: false })
-  author_id: number;
-
   @ManyToMany(() => Genre, (genre) => genre.books)
   @JoinTable({
     name: 'book_genre',
@@ -56,7 +53,10 @@ export class Book {
 
   @ManyToOne(() => User, (user) => user.book, { eager: true })
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user?: User;
+
+  @Column({ type: 'varchar' })
+  image?: string;
 
   @CreateDateColumn({
     type: 'timestamp',

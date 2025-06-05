@@ -9,11 +9,11 @@ import {
   Put,
 } from '@nestjs/common';
 import { BooksService } from '../services/books.service';
-import { CreateBookDto, FilterBookDto, UpdateBookDto } from '../dto/book.dto';
+import { CreateBookDto, UpdateBookDto } from '../dto/book.dto';
 import { Auth, GetUser } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
 import { User } from 'src/auth/entities/user.entity';
-// import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('books')
 export class BooksController {
@@ -21,13 +21,8 @@ export class BooksController {
 
   // optener el objeto junto con la paginacion
   @Get()
-  async getBooksAll(@Query() params: FilterBookDto) {
-    const rows = await this.BooksService.findAll(params);
-
-    const data = {
-      data: rows,
-    };
-    return data;
+  async getBooksAll(@Query() pagination: PaginationDto) {
+    return this.BooksService.findAll(pagination);
   }
 
   // optener un objeto por id
@@ -42,9 +37,9 @@ export class BooksController {
 
   // Crear un objeto nuevo
   @Post()
-  @Auth(ValidRoles.admin)
-  async create(@Body() CreateBookDto: CreateBookDto, @GetUser() user: User) {
-    const nuevo = await this.BooksService.create(CreateBookDto, user);
+  // @Auth(ValidRoles.admin)
+  async create(@Body() CreateBookDto: CreateBookDto) { //@GetUser() user: User
+    const nuevo = await this.BooksService.create(CreateBookDto); // user
     const data = {
       data: nuevo,
       message: 'Registro creado correctamente',
@@ -53,7 +48,7 @@ export class BooksController {
   }
 
   @Put(':id')
-  @Auth(ValidRoles.admin)
+  // @Auth(ValidRoles.admin)
   async update(
     @Param('id') id: number,
     @Body() updateBookDto: UpdateBookDto,
@@ -67,16 +62,16 @@ export class BooksController {
     return data;
   }
 
-  @Delete()
-  @Auth(ValidRoles.admin)
-  async removeAll() {
-    const dato = await this.BooksService.deleteAllBooks();
-    const data = {
-      data: dato,
-      message: 'Registros eliminados correctamente',
-    };
-    return data;
-  }
+  // @Delete()
+  // @Auth(ValidRoles.admin)
+  // async removeAll() {
+  //   const dato = await this.BooksService.deleteAllBooks();
+  //   const data = {
+  //     data: dato,
+  //     message: 'Registros eliminados correctamente',
+  //   };
+  //   return data;
+  // }
 
   // Eliminar un objeto
   @Delete(':id')

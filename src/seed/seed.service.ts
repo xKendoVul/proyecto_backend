@@ -40,13 +40,13 @@ export class SeedService {
   //   return 'SEED EXECUTED AUTHORS';
   // }
 
-  private async deleteTables() {
-    await this.bookService.deleteAllBooks();
+  // private async deleteTables() {
+  //   await this.bookService.deleteAllBooks();
 
-    const queryBuilder = this.userRepository.createQueryBuilder();
+  //   const queryBuilder = this.userRepository.createQueryBuilder();
 
-    await queryBuilder.delete().where({}).execute();
-  }
+  //   await queryBuilder.delete().where({}).execute();
+  // }
 
   private async insertUsers() {
     const seedUsers = initialData.users;

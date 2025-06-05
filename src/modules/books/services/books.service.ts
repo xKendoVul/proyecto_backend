@@ -73,7 +73,8 @@ export class BooksService {
   //   });
   // }
 
-  async create(createBookDto: CreateBookDto, user: User) {
+  async create(createBookDto: CreateBookDto) {
+    // user: User
     try {
       const {
         title,
@@ -82,6 +83,7 @@ export class BooksService {
         author_id,
         publisher_id,
         genre_id,
+        image,
       } = createBookDto;
       const genres = await this.genreRepository.findBy({
         id: In(genre_id ?? []),
@@ -110,7 +112,8 @@ export class BooksService {
         genre: genres,
         publisher,
         author,
-        user,
+        //user,
+        image,
       });
       await this.bookRepository.save(book);
       return book;
@@ -122,7 +125,7 @@ export class BooksService {
   async update(id: number, changes: UpdateBookDto, user: User) {
     const book = await this.bookRepository.findOne({
       where: { id },
-      relations: { genre: true, user: true, publisher: true },
+      relations: { genre: true, author: true, user: true, publisher: true },
     });
 
     if (!book) {
@@ -146,7 +149,18 @@ export class BooksService {
       book.genre = genres;
     }
 
-    // Actualizar publisher (uno a muchos)
+    if (changes.author_id) {
+      const author = await this.authorRepository.findOneBy({
+        id: changes.author_id,
+      });
+      if (!author) {
+        throw new NotFoundException(
+          `El autor con id ${changes.author_id} no fue encontrado`,
+        );
+      }
+      book.author = author;
+    }
+
     if (changes.publisher_id) {
       const publisher = await this.publisherRepository.findOneBy({
         id: changes.publisher_id,
@@ -186,14 +200,15 @@ export class BooksService {
       deletedAt: new Date(),
     };
   }
-  async deleteAllBooks() {
-    const query = this.bookRepository.createQueryBuilder('book');
-    try {
-      return await query.delete().where({}).execute();
-    } catch (error) {
-      this.handleDBException(error);
-    }
-  }
+
+  // async deleteAllBooks() {
+  //   const query = this.bookRepository.createQueryBuilder('book');
+  //   try {
+  //     return await query.delete().where({}).execute();
+  //   } catch (error) {
+  //     this.handleDBException(error);
+  //   }
+  // }
 
   private handleDBException(error: any) {
     if (error.code === '23505') throw new BadRequestException(error.detail);
