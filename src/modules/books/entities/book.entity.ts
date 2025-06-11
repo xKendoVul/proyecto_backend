@@ -56,7 +56,7 @@ export class Book {
 
   @ManyToOne(() => User, (user) => user.book, { eager: true })
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user?: User;
 
   @CreateDateColumn({
     type: 'timestamp',

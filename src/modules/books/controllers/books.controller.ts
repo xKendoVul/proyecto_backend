@@ -42,9 +42,9 @@ export class BooksController {
 
   // Crear un objeto nuevo
   @Post()
-  @Auth(ValidRoles.admin)
-  async create(@Body() CreateBookDto: CreateBookDto, @GetUser() user: User) {
-    const nuevo = await this.BooksService.create(CreateBookDto, user);
+  // @Auth(ValidRoles.admin)
+  async create(@Body() CreateBookDto: CreateBookDto) {
+    const nuevo = await this.BooksService.create(CreateBookDto);
     const data = {
       data: nuevo,
       message: 'Registro creado correctamente',
@@ -53,7 +53,7 @@ export class BooksController {
   }
 
   @Put(':id')
-  @Auth(ValidRoles.admin)
+  // @Auth(ValidRoles.admin)
   async update(
     @Param('id') id: number,
     @Body() updateBookDto: UpdateBookDto,

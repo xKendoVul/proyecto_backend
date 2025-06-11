@@ -73,7 +73,7 @@ export class BooksService {
   //   });
   // }
 
-  async create(createBookDto: CreateBookDto, user: User) {
+  async create(createBookDto: CreateBookDto) {
     try {
       const {
         title,
@@ -82,6 +82,7 @@ export class BooksService {
         author_id,
         publisher_id,
         genre_id,
+        image,
       } = createBookDto;
       const genres = await this.genreRepository.findBy({
         id: In(genre_id ?? []),
@@ -110,7 +111,7 @@ export class BooksService {
         genre: genres,
         publisher,
         author,
-        user,
+        image,
       });
       await this.bookRepository.save(book);
       return book;
