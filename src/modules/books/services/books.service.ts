@@ -122,7 +122,7 @@ export class BooksService {
     }
   }
 
-  async update(id: number, changes: UpdateBookDto, user: User) {
+  async update(id: number, changes: UpdateBookDto) {
     const book = await this.bookRepository.findOne({
       where: { id },
       relations: { genre: true, author: true, user: true, publisher: true },
@@ -173,10 +173,9 @@ export class BooksService {
       book.publisher = publisher;
     }
 
-    // Actualizar usuario si es necesario
-    if (user) {
-      book.user = user;
-    }
+    // if (user) {
+    //   book.user = user;
+    // }
 
     // Actualizar otros campos simples
     this.bookRepository.merge(book, changes);

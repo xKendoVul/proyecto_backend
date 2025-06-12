@@ -80,7 +80,7 @@ export class AuthorService {
       );
     }
     try {
-      await this.authorRepository.delete(id);
+      await this.authorRepository.softDelete(id);
       return {
         message: 'Registro eliminado correctamente',
         deletedAt: new Date(),

@@ -7,6 +7,7 @@ import {
   Query,
   Delete,
   Put,
+  Patch,
 } from '@nestjs/common';
 import { BooksService } from '../services/books.service';
 import { CreateBookDto, UpdateBookDto } from '../dto/book.dto';
@@ -47,14 +48,14 @@ export class BooksController {
     return data;
   }
 
-  @Put(':id')
+  @Patch(':id')
   // @Auth(ValidRoles.admin)
   async update(
     @Param('id') id: number,
     @Body() updateBookDto: UpdateBookDto,
-    @GetUser() user: User,
+    // @GetUser() user: User,
   ) {
-    const datos = await this.BooksService.update(id, updateBookDto, user);
+    const datos = await this.BooksService.update(id, updateBookDto);
     const data = {
       data: datos,
       message: 'Registro actualizado correctamente',

@@ -79,7 +79,7 @@ export class GenreService {
         `El genero con id ${id} no fue encontrado en la base de datos`,
       );
     }
-    await this.genreRepository.delete(id);
+    await this.genreRepository.softDelete(id);
     return {
       message: 'Registro eliminado correctamente',
       deletedAt: new Date(),
