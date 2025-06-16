@@ -58,6 +58,9 @@ export class Book {
   @JoinColumn({ name: 'user_id' })
   user?: User;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  image?: string;
+
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
