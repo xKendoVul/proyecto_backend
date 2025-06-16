@@ -13,10 +13,9 @@ import {
 } from 'class-validator';
 
 export class CreateBookDto {
-  @IsOptional()
   @IsNumber()
   @ApiProperty()
-  id?: number;
+  id: number;
 
   @IsString()
   @MinLength(3)
@@ -53,6 +52,10 @@ export class CreateBookDto {
   @ApiProperty()
   @IsOptional()
   image: string;
+
+  @IsNumber()
+  @ApiProperty()
+  total_copies: number;
 }
 
 export class UpdateBookDto extends PartialType(CreateBookDto) {}

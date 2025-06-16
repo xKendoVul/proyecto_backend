@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Book } from 'src/modules/books/entities/book.entity';
+import { Loan } from 'src/modules/loans/entities/loan.entity';
 
 @Entity('users')
 export class User {
@@ -35,6 +36,9 @@ export class User {
 
   @OneToMany(() => Book, (book) => book.user)
   book: Book;
+
+  @OneToMany(() => Loan, (loan) => loan.user)
+  loan: Loan[];
 
   @BeforeInsert()
   checkFieldsBeforeInsert() {

@@ -5,14 +5,17 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
   ManyToMany,
   JoinTable,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+
 import { Genre } from './genre.entity';
 import { Author } from './author.entity';
 import { Publisher } from './publisher.entity';
+import { Loan } from 'src/modules/loans/entities/loan.entity';
 import { User } from 'src/auth/entities/user.entity';
 
 @Entity()
@@ -57,6 +60,15 @@ export class Book {
 
   @Column({ type: 'varchar' })
   image?: string;
+
+  @ManyToMany(() => Loan, (loan) => loan.books)
+  loans: Loan[];
+
+  @Column({ type: 'int4', default: 1 })
+  total_copies: number;
+
+  @Column({ type: 'int4', default: 1 })
+  available_copies: number;
 
   @CreateDateColumn({
     type: 'timestamp',

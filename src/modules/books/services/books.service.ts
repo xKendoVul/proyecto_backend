@@ -33,7 +33,7 @@ export class BooksService {
   async findOne(id: number) {
     const book = await this.bookRepository.findOne({
       where: { id: id },
-      relations: { genre: true },
+      relations: { genre: true, author: true, publisher: true },
     });
 
     if (!book) {
@@ -84,6 +84,7 @@ export class BooksService {
         publisher_id,
         genre_id,
         image,
+        total_copies,
       } = createBookDto;
       const genres = await this.genreRepository.findBy({
         id: In(genre_id ?? []),
@@ -114,6 +115,7 @@ export class BooksService {
         author,
         //user,
         image,
+        total_copies,
       });
       await this.bookRepository.save(book);
       return book;

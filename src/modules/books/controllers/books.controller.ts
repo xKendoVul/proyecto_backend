@@ -6,7 +6,6 @@ import {
   Param,
   Query,
   Delete,
-  Put,
   Patch,
 } from '@nestjs/common';
 import { BooksService } from '../services/books.service';
@@ -20,13 +19,11 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 export class BooksController {
   constructor(private readonly BooksService: BooksService) {}
 
-  // optener el objeto junto con la paginacion
   @Get()
   async getBooksAll(@Query() pagination: PaginationDto) {
     return this.BooksService.findAll(pagination);
   }
 
-  // optener un objeto por id
   @Get(':id')
   async getOne(@Param('id') id: number) {
     const rows = await this.BooksService.findOne(id);
@@ -36,7 +33,6 @@ export class BooksController {
     return data;
   }
 
-  // Crear un objeto nuevo
   @Post()
   // @Auth(ValidRoles.admin)
   async create(@Body() CreateBookDto: CreateBookDto) { //@GetUser() user: User
@@ -74,7 +70,6 @@ export class BooksController {
   //   return data;
   // }
 
-  // Eliminar un objeto
   @Delete(':id')
   async remove(@Param('id') id: number) {
     const dato = await this.BooksService.remove(id);
