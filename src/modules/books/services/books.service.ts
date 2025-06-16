@@ -117,7 +117,7 @@ export class BooksService {
         //user,
         image,
         total_copies,
-        available_copies: available_copies ?? total_copies,
+        available_copies,
       });
       await this.bookRepository.save(book);
       return book;

@@ -1,47 +1,46 @@
+<h1>Sistema de registro bibliotecario <h1/>
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <img src="./Book-Logo-PNG-Photos.png" width="250" alt="Library Logo" />
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Descripcion
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Creado con el objetivo de lograr la optimización del trabajo de registro y seguimiento de préstamos bibliográficos, mejorar también el acceso a material de lectura a las personas
 
-## Description
+Lograr la realización inventario de libros de manera digital para un mejor control de las unidades disponibles y realización de préstamos para su validación por parte del bibliotecario encargado
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Proyecto realizado con node 20.11.0, framework nestjs versión 11.0.0 para la parte backend y nextjs versión 15.3.2 para el frontend con apoyo de librerias de shadcn para utilizar componentes e implementarlos facilmente, como base de datos se utiliza postgresql versión 17.4
 
-## Project setup
+## Inicializacion del proyecto
+
+Para backend solo es necesario la instalación de los paquetes a través del comando “npm install” realizara la instalación de todos los paquetes de node.module
 
 ```bash
 $ npm install
 ```
 
-## Compile and run the project
+En la parte de la configuración en este caso se utiliza [postgresql 17](https://www.postgresql.org/download/) para la base de datos 
+
+  La Instalacion de Postgresql Varia Segun SO o distro de Linux que utilize
+
+Para la base de datos se utiliza el archivo de configuración de entorno junto con la clave de acceso para lo que es la autenticación en los procesos que se realizan, contenido del archivo .env se ve reflejado en el template que se muestra entre los archivos:
 
 ```bash
-# development
-$ npm run start
+  DB_NAME= dbname
+  DB_PASSWORD= dbpasswd
+  DB_HOST=localhost
+  DB_PORT=5432
+  DB_USERNAME=postgres
 
-# watch mode
+  JWT_SECRET= tujwtsecreto
+```
+
+
+## Iniciar Ejecucion del backend
+
+```bash
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
 ## Run tests
@@ -69,29 +68,6 @@ $ mau deploy
 ```
 
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
