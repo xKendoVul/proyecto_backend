@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { BooksService } from '../services/books.service';
 import { CreateBookDto, UpdateBookDto } from '../dto/book.dto';
-import { Auth, GetUser } from 'src/auth/decorators';
-import { ValidRoles } from 'src/auth/interfaces';
-import { User } from 'src/auth/entities/user.entity';
+// import { Auth, GetUser } from 'src/auth/decorators';
+// import { ValidRoles } from 'src/auth/interfaces';
+// import { User } from 'src/auth/entities/user.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('books')

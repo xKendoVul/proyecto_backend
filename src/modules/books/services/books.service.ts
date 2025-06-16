@@ -11,7 +11,7 @@ import { Genre } from '../entities/genre.entity';
 import { Author } from '../entities/author.entity';
 import { Book } from '../entities/book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities/user.entity';
+// import { User } from 'src/auth/entities/user.entity';
 import { Publisher } from '../entities/publisher.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 
