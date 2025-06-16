@@ -10,6 +10,7 @@ import {
   MinLength,
   IsArray,
   ArrayNotEmpty,
+  isNotEmpty,
 } from 'class-validator';
 
 export class CreateBookDto {
