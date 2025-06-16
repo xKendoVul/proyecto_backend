@@ -54,17 +54,17 @@ export class LoansService {
     const user = await this.userRepository.findOneBy({
       id: createLoanDto.user_id,
     });
-    if (!user) {
+    if (!user)
       throw new NotFoundException(
         `El usuario con id ${createLoanDto.user_id} no fue encontrado en la base de datos`,
       );
-    }
 
     const books = await this.bookRepository.findByIds(createLoanDto.book_id);
     if (books.length !== createLoanDto.book_id.length) {
       throw new BadRequestException('Uno o más libros no existen');
     }
 
+    // Solo verifica disponibilidad, NO restes copias aquí
     const unavailableBooks = books.filter((book) => book.available_copies <= 0);
     if (unavailableBooks.length > 0) {
       const titles = unavailableBooks.map((b) => b.title).join(', ');
@@ -73,17 +73,11 @@ export class LoansService {
       );
     }
 
-    for (const book of books) {
-      book.available_copies -= 1;
-      await this.bookRepository.save(book);
-    }
-
     const loan = this.loanRepository.create({
       books,
       user,
       loan_date: createLoanDto.loan_date,
       return_date: createLoanDto.return_date,
-      // state: createLoanDto.state ?? false,
       isReturned: false,
     });
 
@@ -98,6 +92,21 @@ export class LoansService {
     });
     if (!loan) throw new NotFoundException('Préstamo no encontrado');
     if (loan.state) throw new BadRequestException('Ya confirmado');
+
+    // Por cada libro solicitado
+    for (const book of loan.books) {
+      if (book.available_copies <= 0) {
+        throw new BadRequestException(
+          `No hay copias disponibles de ${book.title}`,
+        );
+      }
+      book.available_copies -= 1;
+      if (book.available_copies === 0) {
+        book.isAvailable = false;
+      }
+      await this.bookRepository.save(book);
+    }
+
     loan.state = true;
     return this.loanRepository.save(loan);
   }
@@ -112,39 +121,18 @@ export class LoansService {
       throw new BadRequestException(
         'No se puede denegar un préstamo ya aceptado',
       );
-    // Regresar los ejemplares
+
     for (const book of loan.books) {
       book.available_copies += 1;
+      // Si hay al menos una copia, marcar como disponible
+      if (book.available_copies > 0) {
+        book.isAvailable = true;
+      }
       await this.bookRepository.save(book);
     }
-    await this.loanRepository.remove(loan); // O marca como denegado si prefieres
+
+    await this.loanRepository.remove(loan);
     return { message: 'Préstamo denegado y ejemplares devueltos' };
-  }
-
-  async update(id: number, updateLoanDto: UpdateLoanDto) {
-    const loan = await this.loanRepository.findOne({
-      where: { id },
-      relations: { books: true, user: true },
-    });
-
-    if (!loan) {
-      throw new NotFoundException(
-        `El préstamo con id ${id} no fue encontrado en la base de datos`,
-      );
-    }
-
-    if (loan.isReturned) {
-      throw new BadRequestException(
-        `El préstamo con id ${id} ya ha sido devuelto y no puede ser modificado`,
-      );
-    }
-
-    for (const book of loan.books) {
-      book.available_copies += 1;
-      await this.bookRepository.save(book);
-    }
-    loan.isReturned = true;
-    return this.loanRepository.save(loan);
   }
 
   private handleDBException(error: any) {

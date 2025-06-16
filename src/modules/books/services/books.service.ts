@@ -11,7 +11,7 @@ import { Genre } from '../entities/genre.entity';
 import { Author } from '../entities/author.entity';
 import { Book } from '../entities/book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-// import { User } from 'src/auth/entities/user.entity';
+import { User } from 'src/auth/entities/user.entity';
 import { Publisher } from '../entities/publisher.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 
@@ -85,6 +85,7 @@ export class BooksService {
         genre_id,
         image,
         total_copies,
+        available_copies,
       } = createBookDto;
       const genres = await this.genreRepository.findBy({
         id: In(genre_id ?? []),
@@ -116,6 +117,7 @@ export class BooksService {
         //user,
         image,
         total_copies,
+        available_copies: available_copies ?? total_copies,
       });
       await this.bookRepository.save(book);
       return book;
@@ -175,6 +177,9 @@ export class BooksService {
       book.publisher = publisher;
     }
 
+    if (changes.isAvailable) {
+      book.isAvailable = changes.isAvailable;
+    }
     // if (user) {
     //   book.user = user;
     // }

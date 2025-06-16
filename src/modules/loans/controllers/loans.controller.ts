@@ -50,16 +50,16 @@ export class LoansController {
     return this.loanService.denyLoan(id);
   }
 
-  @Patch(':id/return')
-  async updateLoan(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateLoanDto: CreateLoanDto,
-  ) {
-    const updatedLoan = await this.loanService.update(id, updateLoanDto);
-    const data = {
-      data: updatedLoan,
-      message: 'Préstamo actualizado',
-    };
-    return data;
-  }
+  // @Patch(':id/return')
+  // async updateLoan(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Body() updateLoanDto: CreateLoanDto,
+  // ) {
+  //   const updatedLoan = await this.loanService.update(id, updateLoanDto);
+  //   const data = {
+  //     data: updatedLoan,
+  //     message: 'Préstamo actualizado',
+  //   };
+  //   return data;
+  // }
 }
