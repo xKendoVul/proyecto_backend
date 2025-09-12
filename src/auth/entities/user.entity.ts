@@ -3,8 +3,10 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Book } from 'src/modules/books/entities/book.entity';
 
 @Entity('users')
 export class User {
@@ -30,6 +32,9 @@ export class User {
     default: ['user'],
   })
   roles: string[];
+
+  @OneToMany(() => Book, (book) => book.user)
+  book: Book;
 
   @BeforeInsert()
   checkFieldsBeforeInsert() {

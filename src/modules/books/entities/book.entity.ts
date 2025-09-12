@@ -7,8 +7,13 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Genre } from './genre.entity';
+import { Author } from './author.entity';
+import { Publisher } from './publisher.entity';
+import { User } from 'src/auth/entities/user.entity';
 
 @Entity()
 export class Book {
@@ -18,29 +23,43 @@ export class Book {
   @Column({ type: 'varchar', length: 100 })
   title: string;
 
+  @Column({ type: 'int4', nullable: false })
+  author_id: number;
+
   @ManyToMany(() => Genre, (genre) => genre.books)
   @JoinTable({
     name: 'book_genre',
     joinColumn: {
       name: 'book_id',
+      referencedColumnName: 'id',
     },
     inverseJoinColumn: {
       name: 'genre_id',
+      referencedColumnName: 'id',
     },
   })
   genre: Genre[];
 
-  @Column({ type: 'varchar', length: 50 })
-  author: string;
+  @ManyToOne(() => Author)
+  @JoinColumn({ name: 'author_id', referencedColumnName: 'id' })
+  author: Author;
 
-  @Column({ type: 'varchar', length: 50 })
-  publisher: string;
+  @ManyToOne(() => Publisher)
+  @JoinColumn({ name: 'publisher_id', referencedColumnName: 'id' })
+  publisher: Publisher;
 
   @Column({ type: 'int4' })
   publication_year: number;
 
   @Column({ type: 'bool', default: true })
   isAvailable: boolean;
+
+  @ManyToOne(() => User, (user) => user.book, { eager: true })
+  @JoinColumn({ name: 'user_id' })
+  user?: User;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  image?: string;
 
   @CreateDateColumn({
     type: 'timestamp',

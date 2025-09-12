@@ -10,7 +10,12 @@ export class CreateGenreDto {
   @IsString()
   @MinLength(3)
   @ApiProperty() // Asegúrate de que ApiProperty esté aquí
-  name: string;
+  name?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  image?: string; // Aquí va la URL de la imagen
 }
 
 export class UpdateGenreDto extends PartialType(CreateGenreDto) {}

@@ -1,4 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
@@ -7,6 +8,10 @@ import {
   IsPositive,
   IsString,
   MinLength,
+  Min,
+  IsArray,
+  ArrayNotEmpty,
+  isNotEmpty,
 } from 'class-validator';
 
 export class CreateBookDto {
@@ -20,30 +25,49 @@ export class CreateBookDto {
   @ApiProperty()
   title: string;
 
-  @IsNumber()
-  @IsOptional()
-  @ApiProperty()
-  @IsNotEmpty()
-  readonly genre_id: number;
-
-  @IsString()
-  @MinLength(3)
-  @ApiProperty()
-  author: string;
-
-  @IsString()
-  @MinLength(3)
-  @ApiProperty()
-  publisher: string;
-
   @IsInt()
   @IsPositive()
   @ApiProperty()
-  publication_year: number;
+  publication_year?: number;
 
   @IsOptional()
   @ApiProperty()
   isAvailable?: boolean;
+
+  @IsNumber()
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly author_id: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly publisher_id: number;
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @Type(() => Number)
+  @IsInt({ each: true })
+  @ApiProperty()
+  readonly genre_id: number[];
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  image?: string;
 }
 
 export class UpdateBookDto extends PartialType(CreateBookDto) {}
+
+export class FilterBookDto {
+  @IsOptional()
+  @IsPositive()
+  limit: number;
+
+  @IsOptional()
+  @Min(0)
+  offset: number;
+
+  @IsOptional()
+  title: string;
+}
